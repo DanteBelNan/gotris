@@ -49,6 +49,17 @@ func DrawBox(size model.Coord, offset model.Coord){
   }
 }
 
-func DrawText(text string, pos model.Coord, offset model.Coord){
-  draw(text,pos,offset)
+func DrawText(text string, Pos model.Coord, offset model.Coord){
+  draw(text,Pos,offset)
+}
+
+func DrawBlock(b *model.Block, offset model.Coord){
+  for i := 3; i>=0;i--{
+    for j:= 0;j<3;j++{
+      obj := b.Elements[i][j]
+      if obj.Chr != "" {
+          draw(obj.Chr, obj.Pos, offset)
+      }
+    }
+  }
 }
