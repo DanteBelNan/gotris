@@ -11,11 +11,12 @@ func main(){
   
 
   term.Clear()
+  Map := screen.NewMap(22,26)
+  Map.Init()
 
   for {
     term.Flush()
-    Map := screen.NewMap(22,26)
-    Map.Init()
+    Map.DrawMap()
     // screen.DrawInterface()
 
     time.Sleep(time.Second)

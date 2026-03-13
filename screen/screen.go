@@ -5,6 +5,7 @@ import (
   "gotris/model"
   "fmt"
   "strings"
+  "errors"
 )
 
 
@@ -12,6 +13,7 @@ type Matrix [22][26]string
 
 type Map struct {
   matrix [][]string
+  scoreMap [][]string
   rowsMap int
   colsMap int 
   rowsScore int
@@ -23,23 +25,33 @@ func NewMap(rows,cols int) *Map{
   m := &Map{
     rowsMap: rows,
     colsMap: cols,
-    rowsScore: cols - 2,
-    colsScore: rows - 10,
+    rowsScore: rows -2 ,
+    colsScore: cols - 16,
     score: 0,
   }
-  m.matrix = make([][]string, rows)
+  m.matrix = make([][]string, m.rowsMap)
   for i := range m.matrix{
-    m.matrix[i] = make([]string,cols)
+    m.matrix[i] = make([]string,m.colsMap)
+  }
+  m.scoreMap = make([][]string, m.rowsScore)
+  for i := range m.scoreMap{
+    m.scoreMap[i] = make([]string,m.colsScore)
   }
 
+  m.populateMap()
+  m.populateScore()
   return m
 }
 
 func (m *Map) Init(){
-  m.populateMap()
-  m.drawMap()
+
+  m.DrawMap()
+  // m.drawScore()
+  
   drawScoreBoard(model.Coord{m.rowsScore,m.colsScore},model.Coord{m.colsMap,0},m.score)
+  //So much faster, maybe the scorebard can be rendered this ugly way, since it works much better
 }
+
 
 func (m *Map) populateMap(){
   for  i:=0; i<m.rowsMap;i++ {
@@ -53,7 +65,7 @@ func (m *Map) populateMap(){
       } else if (i == m.rowsMap-1 && j == m.colsMap-1){
         m.matrix[i][j] = "┘"
       } else if (i == 0 || i == m.rowsMap -1){
-        m.matrix[i][j] = "-"
+        m.matrix[i][j] = "-" 
       } else if (j == 0 || j == m.colsMap -1){
         m.matrix[i][j] = "|"
       } else {
@@ -63,12 +75,53 @@ func (m *Map) populateMap(){
   }
 }
 
+func (m *Map) populateScore(){
+  for  i:=0; i<m.rowsScore;i++ {
+    for j:=0;j<m.colsScore;j++ {
+      if (i == 0 && j == 0){
+        m.scoreMap[i][j] = "┌"
+      } else if (i == 0 && j == m.colsScore-1){
+        m.scoreMap[i][j] = "┐"
+      } else if (i == m.rowsScore -1 && j == 0){
+         m.scoreMap[i][j] = "└"
+      } else if (i == m.rowsScore-1 && j == m.colsScore-1){
+        m.scoreMap[i][j] = "┘"
+      } else if (i == 0 || i == m.rowsScore -1){
+        m.scoreMap[i][j] = "-"
+      } else if (j == 0 || j == m.colsScore -1){
+        m.scoreMap[i][j] = "|"
+      } else {
+        m.scoreMap[i][j] = " "
+      }
+    }
+
+  }
+}
+
+func WriteInMatrix(line *[]string, text string) error {
+	if len(text) >= len(*line) {
+		return errors.New("text can not have more characters than line")
+	}
+
+	for i := 0; i < len(text); i++ {
+		char := string(text[i])
+		(*line)[i] = char
+	}
+
+	return nil
+}
 
 
-func (m *Map) drawMap(){
+func (m *Map) DrawMap(){
   utils.Debug(fmt.Sprintf("%d", m.rowsMap),5)
   for i:=0; i<m.rowsMap;i++ {
     utils.DrawLine(strings.Join(m.matrix[i],""),model.Coord{0,i},model.Coord{1,1})
+  }
+}
+
+func (m *Map) drawScore(){
+  for i:=0; i<m.rowsScore;i++ {
+    utils.DrawLine(strings.Join(m.scoreMap[i],""),model.Coord{0,i},model.Coord{m.rowsMap+6,1})
   }
 }
 
