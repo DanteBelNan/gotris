@@ -14,7 +14,9 @@ func main(){
 
   for {
     term.Flush()
-    screen.DrawInterface()
+    Map := screen.NewMap(22,26)
+    Map.Init()
+    // screen.DrawInterface()
 
     time.Sleep(time.Second)
   }
