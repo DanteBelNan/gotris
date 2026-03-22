@@ -26,7 +26,7 @@ func NewMap(rows,cols int) *Map{
     rowsMap: rows,
     colsMap: cols,
     rowsScore: rows -2 ,
-    colsScore: cols - 16,
+    colsScore: cols - 10,
     score: 0,
   }
   m.matrix = make([][]string, m.rowsMap)
@@ -46,9 +46,9 @@ func NewMap(rows,cols int) *Map{
 func (m *Map) Init(){
 
   m.DrawMap()
-  // m.drawScore()
+  m.DrawScore()
   
-  drawScoreBoard(model.Coord{m.rowsScore,m.colsScore},model.Coord{m.colsMap,0},m.score)
+  // drawScoreBoard(model.Coord{m.rowsScore,m.colsScore},model.Coord{m.colsMap,0},m.score)
   //So much faster, maybe the scorebard can be rendered this ugly way, since it works much better
 }
 
@@ -119,7 +119,7 @@ func (m *Map) DrawMap(){
   }
 }
 
-func (m *Map) drawScore(){
+func (m *Map) DrawScore(){
   for i:=0; i<m.rowsScore;i++ {
     utils.DrawLine(strings.Join(m.scoreMap[i],""),model.Coord{0,i},model.Coord{m.rowsMap+6,1})
   }

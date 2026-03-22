@@ -12,7 +12,7 @@ func draw(chr string, pos model.Coord, offset model.Coord){
 
 func DrawLine(str string, pos model.Coord, offset model.Coord){
   term.MoveCursor(pos.X + offset.X,pos.Y+offset.Y)
-  term.Println(str)
+  term.Print(str)
 }
 
 func Debug(err string, counter int){
