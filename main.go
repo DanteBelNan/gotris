@@ -9,7 +9,6 @@ import (
 
 func main(){
   
-
   term.Clear()
   Map := screen.NewMap(22,26)
   Map.Init()
@@ -17,7 +16,6 @@ func main(){
   for {
     term.Flush()
     Map.DrawMap()
-    // screen.DrawInterface()
 
     time.Sleep(time.Second)
   }
